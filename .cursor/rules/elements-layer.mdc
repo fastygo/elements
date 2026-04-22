@@ -1,0 +1,19 @@
+---
+description: Elements — reusable widgets, not page scenes
+alwaysApply: true
+---
+
+# Elements
+
+**Role:** Complex reusable **widgets** — calendar, combobox, modal patterns, data-table shells, multi-step controls. Stable, meaningful public APIs.
+
+**Boundaries**
+- **May import** `UI8Kit` (and `ui8kit/utils`) only — **not** `Blocks`.
+- **Do not** mirror full primitive props (`ButtonProps`, …) unless the widget truly needs them; avoid thin wrappers that only rename a class — that duplicates API and drifts.
+- **Do not** encode page-level roles (e.g. hero CTA semantics, marketing gradients) — that belongs in **Blocks** or **app** CSS.
+
+**Promotion path:** start composites in `Blocks/.../internal/` or `Blocks/pkg/`; move here only when the contract is stable and reused across products.
+
+**Naming:** prefer `el-*` for Element-owned semantic CSS if needed.
+
+**Browser / ARIA:** `Elements/js` extends `UI8Kit` scripts (load `ui8kit` first). APG parity backlog: `.project/APG-JS-ROADMAP.md` (canonical list: https://www.w3.org/WAI/ARIA/apg/patterns/).
