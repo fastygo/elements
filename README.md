@@ -25,7 +25,7 @@ So: **Elements exists so complexity and ARIA-heavy behavior live in one place**,
 
 - **Widgets, not scenes.** Elements encode **reusable controls** (date picker shell, menu pattern, modal shell, data table keyboard region). **Hero CTAs, marketing layout, campaign copy** belong in **Blocks** or **app** — not here.
 - **Dependencies:** Elements may depend on **UI8Kit** only — not on Blocks. See [`.cursor/rules/elements-layer.mdc`](.cursor/rules/elements-layer.mdc).
-- **Go / templ:** Match UI8Kit conventions — variants and props, no raw utility-class strings in library templates; semantic CSS where needed (`el-*` when you own a class).
+- **Go / templ:** Match UI8Kit conventions — explicit utility classes are allowed, but must pass `.ui8px` policy. Use semantic CSS where needed (`el-*` when you own a class).
 - **JavaScript:** Ship **`Elements/js`** that assumes **`ui8kit` is loaded first**; add **new** `window.ui8kit.*` (or a thin `elements` namespace delegating to it) for APG patterns **not** covered by `UI8Kit/js`. Roadmap: [`.project/APG-JS-ROADMAP.md`](.project/APG-JS-ROADMAP.md).
 - **Quality:** Widget-scoped linting and a11y (e.g. ESLint on JS, axe on fixtures). Full-page and app flows are validated in **Blocks** or **apps**. See [`.project/VALIDATION-AND-TOOLING.md`](.project/VALIDATION-AND-TOOLING.md).
 
@@ -40,6 +40,10 @@ So: **Elements exists so complexity and ARIA-heavy behavior live in one place**,
 
 **Go (future):** compositional templ components built only from UI8Kit.  
 **JS:** the **rest of the APG behavioral surface** the product stack needs, implemented once and reused — aligned with [APG](https://www.w3.org/WAI/ARIA/apg/patterns/), not a fork of the APG repo’s own CI toolchain.
+
+## Packages
+
+- `toggles`: reusable header controls for language switching and dark mode. These components preserve the UI8Kit header hooks and can be passed into `ui8kit/layout.Shell` through `ThemeToggleComponent`.
 
 ---
 
@@ -60,6 +64,34 @@ So: **Elements exists so complexity and ARIA-heavy behavior live in one place**,
 | [**ui8kit**](https://github.com/fastygo/ui8kit) | Go/templ primitives + minimal `ui8kit` JS |
 | [**elements**](https://github.com/fastygo/elements) | Reusable widgets + APG-oriented JS (this repo) |
 | [**blocks**](https://github.com/fastygo/blocks) | Page-level organisms |
+
+---
+
+## Local development
+
+Use the cross-repo workspace when changing UI8Kit, Elements, Blocks, and Framework together:
+
+```bash
+cd e:/_@Go/.WorkSpace-Framework
+go work sync
+```
+
+This module uses a pseudo-zero `github.com/fastygo/ui8kit` requirement plus a local replace:
+
+```text
+replace github.com/fastygo/ui8kit => ../@UI8Kit
+```
+
+Run checks from this directory. `ui8px` is intentionally not installed as a dependency; call it through `npx`:
+
+```bash
+go test ./...
+npx ui8px@latest lint ./...
+npx ui8px@latest lint ./... --learn
+npx ui8px@latest validate patterns ./...
+```
+
+Replace pseudo-zero versions with tagged releases only when publishing stable module versions.
 
 ---
 

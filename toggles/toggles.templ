@@ -1,0 +1,169 @@
+package toggles
+
+import (
+	"strings"
+
+	t "github.com/a-h/templ"
+)
+
+type LanguageToggleProps struct {
+	ID               string
+	Class            string
+	Href             string
+	DefaultLocale    string
+	CurrentLocale    string
+	CurrentLabel     string
+	NextLocale       string
+	NextLabel        string
+	AvailableLocales []string
+	EnhanceWithJS    bool
+	SPATarget        string
+}
+
+type DarkModeToggleProps struct {
+	ID                 string
+	Class              string
+	IconID             string
+	IconClass          string
+	Label              string
+	SwitchToDarkLabel  string
+	SwitchToLightLabel string
+}
+
+type HeaderLanguageToggleProps struct {
+	ContainerClass string
+	Toggle         LanguageToggleProps
+}
+
+templ LanguageToggle(props LanguageToggleProps) {
+	if strings.TrimSpace(props.CurrentLocale) != "" || strings.TrimSpace(props.CurrentLabel) != "" {
+		<a
+			id={ languageToggleID(props.ID) }
+			class={ languageToggleClass(props.Class) }
+			href={ t.URL(props.Href) }
+			data-default-locale={ props.DefaultLocale }
+			data-current-locale={ props.CurrentLocale }
+			data-next-locale={ props.NextLocale }
+			data-next-label={ props.NextLabel }
+			data-available-locales={ strings.Join(props.AvailableLocales, ",") }
+			if props.EnhanceWithJS {
+				data-ui8kit-spa-lang="1"
+				data-spa-target={ props.SPATarget }
+			}
+		>{ languageToggleLabel(props.CurrentLabel, props.CurrentLocale) }</a>
+	}
+}
+
+templ DarkModeToggle(props DarkModeToggleProps) {
+	<button
+		type="button"
+		id={ darkModeToggleID(props.ID) }
+		class={ darkModeToggleClass(props.Class) }
+		data-switch-to-dark-label={ darkModeSwitchToDarkLabel(props.SwitchToDarkLabel) }
+		data-switch-to-light-label={ darkModeSwitchToLightLabel(props.SwitchToLightLabel) }
+		title={ darkModeToggleLabel(props.Label) }
+		aria-label={ darkModeToggleLabel(props.Label) }
+		aria-pressed="false"
+	>
+		<span id={ darkModeIconID(props.IconID) } class={ darkModeIconClass(props.IconClass) }></span>
+	</button>
+}
+
+templ HeaderLanguageToggle(props HeaderLanguageToggleProps) {
+	<div class={ headerLanguageToggleClass(props.ContainerClass) }>
+		@LanguageToggle(props.Toggle)
+	</div>
+}
+
+func languageToggleID(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "language-toggle"
+}
+
+func languageToggleClass(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return defaultLanguageToggleClass()
+}
+
+func defaultLanguageToggleClass() string {
+	return "ui-header-action-btn"
+}
+
+func headerLanguageToggleClass(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return defaultHeaderLanguageToggleClass()
+}
+
+func defaultHeaderLanguageToggleClass() string {
+	return "ui-header-language"
+}
+
+func languageToggleLabel(label, locale string) string {
+	if strings.TrimSpace(label) != "" {
+		return label
+	}
+	return strings.ToUpper(strings.TrimSpace(locale))
+}
+
+func darkModeToggleID(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "ui8kit-theme-toggle"
+}
+
+func darkModeToggleClass(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return defaultDarkModeToggleClass()
+}
+
+func defaultDarkModeToggleClass() string {
+	return "ui-header-theme-btn"
+}
+
+func darkModeIconID(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "theme-toggle-icon"
+}
+
+func darkModeIconClass(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return defaultDarkModeIconClass()
+}
+
+func defaultDarkModeIconClass() string {
+	return "ui-theme-icon latty latty-moon"
+}
+
+func darkModeToggleLabel(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "Toggle theme"
+}
+
+func darkModeSwitchToDarkLabel(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "Switch to dark mode"
+}
+
+func darkModeSwitchToLightLabel(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "Switch to light mode"
+}

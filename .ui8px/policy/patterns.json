@@ -1,0 +1,22 @@
+{
+  "patterns": {
+    "el-widget": ["relative"],
+    "el-widget-control": ["inline-flex", "items-center", "justify-center"],
+    "el-widget-label": ["text-sm", "font-medium"],
+    "el-widget-description": ["text-sm", "text-muted-foreground"],
+    "ui-header-action-btn": ["inline-flex", "items-center", "justify-center"],
+    "ui-header-language": ["flex", "justify-center"],
+    "ui-header-menu-btn": ["inline-flex", "items-center", "justify-center"],
+    "ui-header-nav": ["flex", "items-center", "justify-center"],
+    "ui-header-nav-link": ["text-sm", "font-medium"],
+    "ui-header-nav-wrap": ["hidden"],
+    "ui-header-theme-btn": ["inline-flex", "items-center", "justify-center"],
+    "ui-shell-mobile-sheet-close": ["inline-flex", "items-center", "justify-center"],
+    "ui-sidebar-item": ["flex", "items-center"],
+    "ui-sidebar-item-active": ["bg-accent", "text-accent-foreground"],
+    "ui-sidebar-item-icon": ["inline-block"],
+    "ui-sidebar-item-inactive": ["text-muted-foreground", "hover:bg-accent"],
+    "ui-sidebar-item-label": ["min-w-0"],
+    "ui-theme-icon": ["inline-block"]
+  }
+}

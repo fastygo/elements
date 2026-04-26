@@ -1,0 +1,26 @@
+{
+  "defaultScope": "control",
+  "scopes": [
+    {
+      "name": "widgets",
+      "files": [
+        "**/*.go",
+        "**/*.templ",
+        "internal/**",
+        "pkg/**",
+        "widgets/**",
+        "js/**"
+      ],
+      "spacing": "control"
+    },
+    {
+      "name": "layout-examples",
+      "files": [
+        "examples/**",
+        "tests/examples/**",
+        "docs/**"
+      ],
+      "spacing": "layout"
+    }
+  ]
+}
