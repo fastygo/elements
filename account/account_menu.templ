@@ -1,0 +1,72 @@
+package account
+
+import (
+	"strings"
+
+	t "github.com/a-h/templ"
+	"github.com/fastygo/elements/toggles"
+)
+
+type MenuClasses struct {
+	Wrap    string
+	Form    string
+	Email   string
+	SignOut string
+}
+
+type MenuProps struct {
+	Email          string
+	SignOutLabel   string
+	SignOutAction  string
+	LanguageToggle toggles.LanguageToggleProps
+	Classes        MenuClasses
+}
+
+templ Menu(props MenuProps) {
+	<div class={ menuWrapClass(props.Classes.Wrap) }>
+		<form method="post" action={ t.URL(menuSignOutAction(props.SignOutAction)) } class={ menuFormClass(props.Classes.Form) }>
+			if strings.TrimSpace(props.Email) != "" {
+				<span class={ menuEmailClass(props.Classes.Email) }>{ props.Email }</span>
+			}
+			<button type="submit" class={ menuSignOutClass(props.Classes.SignOut) }>{ menuSignOutLabel(props.SignOutLabel) }</button>
+		</form>
+		@toggles.LanguageToggle(props.LanguageToggle)
+	</div>
+}
+
+func resolveClass(value, fallback string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return fallback
+}
+
+func menuWrapClass(value string) string {
+	return resolveClass(value, "flex items-center gap-2")
+}
+
+func menuFormClass(value string) string {
+	return resolveClass(value, "flex items-center gap-2")
+}
+
+func menuEmailClass(value string) string {
+	return resolveClass(value, "text-xs text-muted-foreground")
+}
+
+func menuSignOutClass(value string) string {
+	return resolveClass(value, "inline-flex h-8 items-center justify-center whitespace-nowrap rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground")
+}
+
+func menuSignOutAction(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "/auth/logout"
+}
+
+func menuSignOutLabel(value string) string {
+	if strings.TrimSpace(value) != "" {
+		return value
+	}
+	return "Sign out"
+}
