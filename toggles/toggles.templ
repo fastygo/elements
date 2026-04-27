@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	t "github.com/a-h/templ"
+	"github.com/fastygo/ui8kit/ui"
 )
 
 type LanguageToggleProps struct {
@@ -37,36 +38,14 @@ type HeaderLanguageToggleProps struct {
 
 templ LanguageToggle(props LanguageToggleProps) {
 	if strings.TrimSpace(props.CurrentLocale) != "" || strings.TrimSpace(props.CurrentLabel) != "" {
-		<a
-			id={ languageToggleID(props.ID) }
-			class={ languageToggleClass(props.Class) }
-			href={ t.URL(props.Href) }
-			data-default-locale={ props.DefaultLocale }
-			data-current-locale={ props.CurrentLocale }
-			data-next-locale={ props.NextLocale }
-			data-next-label={ props.NextLabel }
-			data-available-locales={ strings.Join(props.AvailableLocales, ",") }
-			if props.EnhanceWithJS {
-				data-ui8kit-spa-lang="1"
-				data-spa-target={ props.SPATarget }
-			}
-		>{ languageToggleLabel(props.CurrentLabel, props.CurrentLocale) }</a>
+		@ui.Button(ui.ButtonProps{ID: languageToggleID(props.ID), Href: props.Href, Variant: "unstyled", Class: languageToggleClass(props.Class), Attrs: languageToggleAttrs(props)}, languageToggleLabel(props.CurrentLabel, props.CurrentLocale))
 	}
 }
 
 templ DarkModeToggle(props DarkModeToggleProps) {
-	<button
-		type="button"
-		id={ darkModeToggleID(props.ID) }
-		class={ darkModeToggleClass(props.Class) }
-		data-switch-to-dark-label={ darkModeSwitchToDarkLabel(props.SwitchToDarkLabel) }
-		data-switch-to-light-label={ darkModeSwitchToLightLabel(props.SwitchToLightLabel) }
-		title={ darkModeToggleLabel(props.Label) }
-		aria-label={ darkModeToggleLabel(props.Label) }
-		aria-pressed="false"
-	>
+	@ui.ButtonBlock(ui.ButtonProps{ID: darkModeToggleID(props.ID), Variant: "unstyled", Class: darkModeToggleClass(props.Class), AriaLabel: darkModeToggleLabel(props.Label), Attrs: darkModeToggleAttrs(props)}) {
 		<span id={ darkModeIconID(props.IconID) } class={ darkModeIconClass(props.IconClass) }></span>
-	</button>
+	}
 }
 
 templ HeaderLanguageToggle(props HeaderLanguageToggleProps) {
@@ -91,6 +70,21 @@ func languageToggleClass(value string) string {
 
 func defaultLanguageToggleClass() string {
 	return "ui-header-action-btn"
+}
+
+func languageToggleAttrs(props LanguageToggleProps) t.Attributes {
+	attrs := t.Attributes{
+		"data-default-locale":    props.DefaultLocale,
+		"data-current-locale":    props.CurrentLocale,
+		"data-next-locale":       props.NextLocale,
+		"data-next-label":        props.NextLabel,
+		"data-available-locales": strings.Join(props.AvailableLocales, ","),
+	}
+	if props.EnhanceWithJS {
+		attrs["data-ui8kit-spa-lang"] = "1"
+		attrs["data-spa-target"] = props.SPATarget
+	}
+	return attrs
 }
 
 func headerLanguageToggleClass(value string) string {
@@ -127,6 +121,15 @@ func darkModeToggleClass(value string) string {
 
 func defaultDarkModeToggleClass() string {
 	return "ui-header-theme-btn"
+}
+
+func darkModeToggleAttrs(props DarkModeToggleProps) t.Attributes {
+	return t.Attributes{
+		"data-switch-to-dark-label":  darkModeSwitchToDarkLabel(props.SwitchToDarkLabel),
+		"data-switch-to-light-label": darkModeSwitchToLightLabel(props.SwitchToLightLabel),
+		"title":                      darkModeToggleLabel(props.Label),
+		"aria-pressed":               "false",
+	}
 }
 
 func darkModeIconID(value string) string {

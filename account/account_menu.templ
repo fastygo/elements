@@ -5,6 +5,7 @@ import (
 
 	t "github.com/a-h/templ"
 	"github.com/fastygo/elements/toggles"
+	"github.com/fastygo/ui8kit/ui"
 )
 
 type MenuClasses struct {
@@ -23,38 +24,15 @@ type MenuProps struct {
 }
 
 templ Menu(props MenuProps) {
-	<div class={ menuWrapClass(props.Classes.Wrap) }>
-		<form method="post" action={ t.URL(menuSignOutAction(props.SignOutAction)) } class={ menuFormClass(props.Classes.Form) }>
+	@ui.Group(ui.GroupProps{Class: props.Classes.Wrap}) {
+		<form method="post" action={ t.URL(menuSignOutAction(props.SignOutAction)) } class={ props.Classes.Form }>
 			if strings.TrimSpace(props.Email) != "" {
-				<span class={ menuEmailClass(props.Classes.Email) }>{ props.Email }</span>
+				@ui.Text(ui.TextProps{Tag: "span", Class: props.Classes.Email}, props.Email)
 			}
-			<button type="submit" class={ menuSignOutClass(props.Classes.SignOut) }>{ menuSignOutLabel(props.SignOutLabel) }</button>
+			@ui.Button(ui.ButtonProps{Type: "submit", Variant: "outline", Size: "sm", Class: props.Classes.SignOut}, menuSignOutLabel(props.SignOutLabel))
 		</form>
 		@toggles.LanguageToggle(props.LanguageToggle)
-	</div>
-}
-
-func resolveClass(value, fallback string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
 	}
-	return fallback
-}
-
-func menuWrapClass(value string) string {
-	return resolveClass(value, "flex items-center gap-2")
-}
-
-func menuFormClass(value string) string {
-	return resolveClass(value, "flex items-center gap-2")
-}
-
-func menuEmailClass(value string) string {
-	return resolveClass(value, "text-xs text-muted-foreground")
-}
-
-func menuSignOutClass(value string) string {
-	return resolveClass(value, "inline-flex h-8 items-center justify-center whitespace-nowrap rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground")
 }
 
 func menuSignOutAction(value string) string {

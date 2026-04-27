@@ -1,6 +1,11 @@
 package dialogs
 
-import "strings"
+import (
+	"strings"
+
+	t "github.com/a-h/templ"
+	"github.com/fastygo/ui8kit/ui"
+)
 
 type CloseButtonProps struct {
 	TargetID string
@@ -11,15 +16,7 @@ type CloseButtonProps struct {
 
 // ui8contract: dialog.close provider=github.com/fastygo/elements/dialogs.CloseButton
 templ CloseButton(props CloseButtonProps) {
-	<button
-		type="button"
-		class={ closeButtonClass(props.Class) }
-		data-ui8kit-dialog-close
-		data-ui8kit-dialog-target={ closeButtonTargetID(props.TargetID) }
-		aria-label={ closeButtonLabel(props.Label) }
-	>
-		{ closeButtonText(props.Text) }
-	</button>
+	@ui.Button(ui.ButtonProps{Variant: "unstyled", Class: closeButtonClass(props.Class), AriaLabel: closeButtonLabel(props.Label), Attrs: closeButtonAttrs(props)}, closeButtonText(props.Text))
 }
 
 func closeButtonTargetID(value string) string {
@@ -41,6 +38,13 @@ func closeButtonClass(value string) string {
 		return value
 	}
 	return defaultCloseButtonClass()
+}
+
+func closeButtonAttrs(props CloseButtonProps) t.Attributes {
+	return t.Attributes{
+		"data-ui8kit-dialog-close":  true,
+		"data-ui8kit-dialog-target": closeButtonTargetID(props.TargetID),
+	}
 }
 
 func defaultCloseButtonClass() string {

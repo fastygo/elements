@@ -4,7 +4,8 @@ import (
 	"strings"
 
 	t "github.com/a-h/templ"
-	ui8components "github.com/fastygo/ui8kit/components"
+	cmp "github.com/fastygo/ui8kit/components"
+	"github.com/fastygo/ui8kit/ui"
 )
 
 type MobileMenuButtonClasses struct {
@@ -67,22 +68,13 @@ type HeaderNavProps struct {
 
 // ui8contract: dialog.trigger provider=github.com/fastygo/elements/navigation.MobileMenuButton
 templ MobileMenuButton(props MobileMenuButtonProps) {
-	<button
-		id={ mobileMenuButtonID(props.ID) }
-		type="button"
-		class={ mobileMenuButtonClass(props) }
-		data-ui8kit-dialog-open
-		data-ui8kit-dialog-target={ mobileMenuButtonTargetID(props.TargetID) }
-		aria-label={ mobileMenuButtonLabel(props.Label) }
-		aria-haspopup="dialog"
-		aria-controls={ mobileMenuButtonTargetID(props.TargetID) }
-	>
+	@ui.ButtonBlock(ui.ButtonProps{ID: mobileMenuButtonID(props.ID), Variant: "unstyled", Class: mobileMenuButtonClass(props), AriaLabel: mobileMenuButtonLabel(props.Label), Attrs: mobileMenuButtonAttrs(props)}) {
 		if props.Icon != nil {
 			@props.Icon
 		} else if strings.TrimSpace(mobileMenuButtonIconClass(props)) != "" {
 			<span class={ mobileMenuButtonIconClass(props) } aria-hidden="true"></span>
 		}
-	</button>
+	}
 }
 
 templ NavList(props NavListProps) {
@@ -116,23 +108,23 @@ templ HeaderNav(props HeaderNavProps) {
 }
 
 templ navBranch(item NavItem, props NavListProps) {
-	@ui8components.Accordion(ui8components.AccordionProps{
+	@cmp.Accordion(cmp.AccordionProps{
 		Class: navAccordionClass(props.Classes.Accordion),
 		Type:  "single",
 	}) {
-		@ui8components.AccordionItem(ui8components.AccordionItemProps{
+		@cmp.AccordionItem(cmp.AccordionItemProps{
 			Class: navAccordionItemClass(props.Classes.AccordionItem),
 			Value: navItemValue(item),
 			Open:  item.Open,
 		}) {
-			@ui8components.AccordionTrigger(ui8components.AccordionTriggerProps{
+			@cmp.AccordionTrigger(cmp.AccordionTriggerProps{
 				Class: navAccordionTriggerClass(props.Classes.AccordionTrigger, props.Classes),
 				Value: navItemValue(item),
 				Open:  item.Open,
 			}) {
 				@navItemBody(item, props.Classes)
 			}
-			@ui8components.AccordionContent(ui8components.AccordionContentProps{
+			@cmp.AccordionContent(cmp.AccordionContentProps{
 				Class: navAccordionContentClass(props.Classes.AccordionContent),
 				Value: navItemValue(item),
 				Open:  item.Open,
@@ -212,6 +204,16 @@ func mobileMenuButtonClass(props MobileMenuButtonProps) string {
 		return props.Class
 	}
 	return defaultMobileMenuButtonClass()
+}
+
+func mobileMenuButtonAttrs(props MobileMenuButtonProps) t.Attributes {
+	targetID := mobileMenuButtonTargetID(props.TargetID)
+	return t.Attributes{
+		"data-ui8kit-dialog-open":   true,
+		"data-ui8kit-dialog-target": targetID,
+		"aria-haspopup":             "dialog",
+		"aria-controls":             targetID,
+	}
 }
 
 func defaultMobileMenuButtonClass() string {
