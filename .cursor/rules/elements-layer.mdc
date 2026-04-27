@@ -11,9 +11,21 @@ alwaysApply: true
 - **May import** `UI8Kit` (and `ui8kit/utils`) only — **not** `Blocks`.
 - **Do not** mirror full primitive props (`ButtonProps`, …) unless the widget truly needs them; avoid thin wrappers that only rename a class — that duplicates API and drifts.
 - **Do not** encode page-level roles (e.g. hero CTA semantics, marketing gradients) — that belongs in **Blocks** or **app** CSS.
+- Public widget APIs should describe widget behavior and data, not leak nested UI8Kit primitive props. Use UI8Kit props internally.
+- `Class string` and a small `Classes`/part-class struct are acceptable when callers need controlled styling hooks.
+
+**Styling after UI8Kit explicit-class refactor**
+- Explicit Tailwind utility classes are allowed in Elements templates and Go variant helpers. They must be validated by `ui8px`.
+- Elements are usually **control** scope: compact 4px tuning (`px-3`, `py-1`, `h-7`) is allowed for buttons, fields, badges, tabs, menus, and other dense widgets.
+- Layout-like examples or docs pages in this repo should use layout scope and the strict 8px rhythm.
+- Use UI8Kit/shadcn semantic tokens (`bg-card`, `bg-popover`, `text-muted-foreground`, `border-border`). Avoid raw palette utilities unless the policy explicitly allows them.
+- Add `.ui8px/` at the repo root when Elements starts shipping Go/templ fixtures or CSS policy checks.
 
 **Promotion path:** start composites in `Blocks/.../internal/` or `Blocks/pkg/`; move here only when the contract is stable and reused across products.
 
-**Naming:** prefer `el-*` for Element-owned semantic CSS if needed.
+**Patterns / naming**
+- Prefer explicit utilities first. Use `ui8px validate patterns` to discover repeated compositions before creating semantic CSS.
+- Prefer `el-*` for Element-owned semantic CSS when a widget part has stable meaning.
+- Keep `ui-*` owned by UI8Kit and `bl-*` owned by Blocks.
 
 **Browser / ARIA:** `Elements/js` extends `UI8Kit` scripts (load `ui8kit` first). APG parity backlog: `.project/APG-JS-ROADMAP.md` (canonical list: https://www.w3.org/WAI/ARIA/apg/patterns/).

@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "ui8kit": {
+    "aria": {
+      "mode": "subset",
+      "patterns": ["dialog", "accordion"]
+    }
+  }
+}
