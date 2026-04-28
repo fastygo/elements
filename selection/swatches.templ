@@ -1,0 +1,97 @@
+package selection
+
+import (
+	"strings"
+
+	t "github.com/a-h/templ"
+	"github.com/fastygo/ui8kit/ui"
+	"github.com/fastygo/ui8kit/utils"
+)
+
+type Swatch struct {
+	Label    string
+	Value    string
+	Class    string
+	Selected bool
+}
+
+type SwatchGroupClasses struct {
+	Root     string
+	Label    string
+	List     string
+	Swatch   string
+	Selected string
+	Dot      string
+}
+
+type SwatchGroupProps struct {
+	Label         string
+	Items         []Swatch
+	SelectedValue string
+	Classes       SwatchGroupClasses
+}
+
+templ SwatchGroup(props SwatchGroupProps) {
+	if len(props.Items) > 0 {
+		@ui.Stack(ui.StackProps{Class: swatchGroupRootClass(props.Classes.Root)}) {
+			if strings.TrimSpace(props.Label) != "" {
+				@ui.Text(ui.TextProps{Class: swatchGroupLabelClass(props.Classes.Label), FontSize: "sm", TextColor: "muted-foreground"}, props.Label)
+			}
+			@ui.Group(ui.GroupProps{Class: swatchGroupListClass(props.Classes.List)}) {
+				for _, item := range props.Items {
+					@ui.ButtonBlock(ui.ButtonProps{
+						Type:      "button",
+						Variant:   "unstyled",
+						Class:     swatchButtonClass(item, props),
+						AriaLabel: item.Label,
+						Attrs:     swatchAttrs(item, props.SelectedValue),
+					}) {
+						<span class={ swatchDotClass(item, props.Classes.Dot) }></span>
+					}
+				}
+			}
+		}
+	}
+}
+
+func swatchAttrs(item Swatch, selectedValue string) t.Attributes {
+	return t.Attributes{
+		"aria-pressed": swatchSelected(item, selectedValue),
+		"data-value":   item.Value,
+	}
+}
+
+func swatchSelected(item Swatch, selectedValue string) bool {
+	if item.Selected {
+		return true
+	}
+	return strings.TrimSpace(selectedValue) != "" && item.Value == selectedValue
+}
+
+func swatchGroupRootClass(value string) string {
+	return utils.Cn("gap-2", value)
+}
+
+func swatchGroupLabelClass(value string) string {
+	return utils.Cn("text-sm text-muted-foreground", value)
+}
+
+func swatchGroupListClass(value string) string {
+	return utils.Cn("gap-2 flex-wrap", value)
+}
+
+func swatchButtonClass(item Swatch, props SwatchGroupProps) string {
+	selected := ""
+	if swatchSelected(item, props.SelectedValue) {
+		selected = utils.Cn("border-primary", props.Classes.Selected)
+	}
+	return utils.Cn(
+		"inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background",
+		selected,
+		props.Classes.Swatch,
+	)
+}
+
+func swatchDotClass(item Swatch, class string) string {
+	return utils.Cn("block h-5 w-5 rounded-full border border-border bg-muted", item.Class, class)
+}

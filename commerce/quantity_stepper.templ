@@ -1,0 +1,73 @@
+package commerce
+
+import (
+	"strings"
+
+	"github.com/fastygo/ui8kit/ui"
+	"github.com/fastygo/ui8kit/utils"
+)
+
+type QuantityStepperClasses struct {
+	Root   string
+	Label  string
+	Button string
+	Value  string
+}
+
+type QuantityStepperProps struct {
+	Label      string
+	Value      string
+	MinusLabel string
+	PlusLabel  string
+	Classes    QuantityStepperClasses
+}
+
+templ QuantityStepper(props QuantityStepperProps) {
+	@ui.Stack(ui.StackProps{Class: quantityRootClass(props.Classes.Root)}) {
+		if strings.TrimSpace(props.Label) != "" {
+			@ui.Text(ui.TextProps{Class: quantityLabelClass(props.Classes.Label), FontSize: "sm", TextColor: "muted-foreground"}, props.Label)
+		}
+		@ui.Group(ui.GroupProps{Class: "gap-2"}) {
+			@ui.Button(ui.ButtonProps{Type: "button", Variant: "outline", Size: "icon", AriaLabel: quantityMinusLabel(props), Class: quantityButtonClass(props.Classes.Button)}, "-")
+			@ui.Text(ui.TextProps{Class: quantityValueClass(props.Classes.Value), FontSize: "sm", FontWeight: "semibold", TextAlign: "center"}, quantityValue(props.Value))
+			@ui.Button(ui.ButtonProps{Type: "button", Variant: "outline", Size: "icon", AriaLabel: quantityPlusLabel(props), Class: quantityButtonClass(props.Classes.Button)}, "+")
+		}
+	}
+}
+
+func quantityRootClass(value string) string {
+	return utils.Cn("gap-2", value)
+}
+
+func quantityLabelClass(value string) string {
+	return utils.Cn("text-sm text-muted-foreground", value)
+}
+
+func quantityButtonClass(value string) string {
+	return utils.Cn("h-8 w-8", value)
+}
+
+func quantityValueClass(value string) string {
+	return utils.Cn("min-w-8", value)
+}
+
+func quantityValue(value string) string {
+	if strings.TrimSpace(value) == "" {
+		return "1"
+	}
+	return value
+}
+
+func quantityMinusLabel(props QuantityStepperProps) string {
+	if strings.TrimSpace(props.MinusLabel) != "" {
+		return props.MinusLabel
+	}
+	return "Decrease quantity"
+}
+
+func quantityPlusLabel(props QuantityStepperProps) string {
+	if strings.TrimSpace(props.PlusLabel) != "" {
+		return props.PlusLabel
+	}
+	return "Increase quantity"
+}
