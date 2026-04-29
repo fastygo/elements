@@ -11,6 +11,7 @@
     "border-b",
     "border-border",
     "border-input",
+    "border-primary",
     "bg-accent",
     "bg-background",
     "bg-card",
@@ -69,6 +70,7 @@
     "text-sm",
     "text-xs",
     "transition-colors",
+    "-translate-y-1/2",
     "truncate",
     "w-full",
     "whitespace-nowrap"

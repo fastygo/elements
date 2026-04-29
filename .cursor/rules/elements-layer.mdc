@@ -1,31 +1,31 @@
 ---
-description: Elements — reusable widgets, not page scenes
+description: Elements — copy-first widgets built only on UI8Kit
 alwaysApply: true
 ---
 
 # Elements
 
-**Role:** Complex reusable **widgets** — calendar, combobox, modal patterns, data-table shells, multi-step controls. Stable, meaningful public APIs.
+**Role:** Copy-first reusable **widgets** — calendar, combobox, modal patterns, data-table shells, multi-step controls. Elements are design prototypes intended to be cloned into apps.
 
 **Boundaries**
-- **May import** `UI8Kit` (and `ui8kit/utils`) only — **not** `Blocks`.
+- **May import** `UI8Kit` (and `ui8kit/utils`) only — **not** `Blocks`, other `Elements`, or application packages.
+- Treat each element package as a portable source folder. It should work after copying into an app and running `templ generate`.
 - **Do not** mirror full primitive props (`ButtonProps`, …) unless the widget truly needs them; avoid thin wrappers that only rename a class — that duplicates API and drifts.
-- **Do not** encode page-level roles (e.g. hero CTA semantics, marketing gradients) — that belongs in **Blocks** or **app** CSS.
+- **Do not** encode page-level roles, marketing styling, or brand styling.
 - Public widget APIs should describe widget behavior and data, not leak nested UI8Kit primitive props. Use UI8Kit props internally.
-- `Class string` and a small `Classes`/part-class struct are acceptable when callers need controlled styling hooks.
+- Do not expose `Class string`, `Classes` structs, or part-class override APIs.
 
 **Styling after UI8Kit explicit-class refactor**
-- Explicit Tailwind utility classes are allowed in Elements templates and Go variant helpers. They must be validated by `ui8px`.
+- Use only explicit Tailwind utility classes directly in Elements templates. Every class must be allowed by `.ui8px` policy.
 - Elements are usually **control** scope: compact 4px tuning (`px-3`, `py-1`, `h-7`) is allowed for buttons, fields, badges, tabs, menus, and other dense widgets.
 - Layout-like examples or docs pages in this repo should use layout scope and the strict 8px rhythm.
-- Use UI8Kit/shadcn semantic tokens (`bg-card`, `bg-popover`, `text-muted-foreground`, `border-border`). Avoid raw palette utilities unless the policy explicitly allows them.
+- Use token-based Tailwind utilities such as `bg-card`, `bg-popover`, `text-muted-foreground`, and `border-border`. Avoid raw palette utilities unless `.ui8px` explicitly allows them.
 - Add `.ui8px/` at the repo root when Elements starts shipping Go/templ fixtures or CSS policy checks.
+- Semantic/custom CSS classes are forbidden in Elements.
 
 **Promotion path:** start composites in `Blocks/.../internal/` or `Blocks/pkg/`; move here only when the contract is stable and reused across products.
 
-**Patterns / naming**
-- Prefer explicit utilities first. Use `ui8px validate patterns` to discover repeated compositions before creating semantic CSS.
-- Prefer `el-*` for Element-owned semantic CSS when a widget part has stable meaning.
-- Keep `ui-*` owned by UI8Kit and `bl-*` owned by Blocks.
+**Patterns**
+- Do not create named CSS patterns in Elements. Repeated visual structure stays as explicit Tailwind utilities and must pass `.ui8px`.
 
 **Browser / ARIA:** `Elements/js` extends `UI8Kit` scripts (load `ui8kit` first). APG parity backlog: `.project/APG-JS-ROADMAP.md` (canonical list: https://www.w3.org/WAI/ARIA/apg/patterns/).

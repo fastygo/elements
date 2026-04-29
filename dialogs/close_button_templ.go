@@ -18,7 +18,6 @@ import (
 type CloseButtonProps struct {
 	TargetID string
 	Label    string
-	Class    string
 	Text     string
 }
 
@@ -44,7 +43,7 @@ func CloseButton(props CloseButtonProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = ui.Button(ui.ButtonProps{Variant: "unstyled", Class: closeButtonClass(props.Class), AriaLabel: closeButtonLabel(props.Label), Attrs: closeButtonAttrs(props)}, closeButtonText(props.Text)).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Button(ui.ButtonProps{Variant: "unstyled", Class: "ui-shell-mobile-sheet-close", AriaLabel: closeButtonLabel(props.Label), Attrs: closeButtonAttrs(props)}, closeButtonText(props.Text)).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -66,22 +65,11 @@ func closeButtonLabel(value string) string {
 	return "Close"
 }
 
-func closeButtonClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultCloseButtonClass()
-}
-
 func closeButtonAttrs(props CloseButtonProps) t.Attributes {
 	return t.Attributes{
 		"data-ui8kit-dialog-close":  true,
 		"data-ui8kit-dialog-target": closeButtonTargetID(props.TargetID),
 	}
-}
-
-func defaultCloseButtonClass() string {
-	return "ui-shell-mobile-sheet-close"
 }
 
 func closeButtonText(value string) string {

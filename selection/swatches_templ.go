@@ -23,20 +23,10 @@ type Swatch struct {
 	Selected bool
 }
 
-type SwatchGroupClasses struct {
-	Root     string
-	Label    string
-	List     string
-	Swatch   string
-	Selected string
-	Dot      string
-}
-
 type SwatchGroupProps struct {
 	Label         string
 	Items         []Swatch
 	SelectedValue string
-	Classes       SwatchGroupClasses
 }
 
 func SwatchGroup(props SwatchGroupProps) templ.Component {
@@ -74,7 +64,7 @@ func SwatchGroup(props SwatchGroupProps) templ.Component {
 				}
 				ctx = templ.InitializeContext(ctx)
 				if strings.TrimSpace(props.Label) != "" {
-					templ_7745c5c3_Err = ui.Text(ui.TextProps{Class: swatchGroupLabelClass(props.Classes.Label), FontSize: "sm", TextColor: "muted-foreground"}, props.Label).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = ui.Text(ui.TextProps{Class: "text-sm text-muted-foreground", FontSize: "sm", TextColor: "muted-foreground"}, props.Label).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -108,7 +98,7 @@ func SwatchGroup(props SwatchGroupProps) templ.Component {
 								}()
 							}
 							ctx = templ.InitializeContext(ctx)
-							var templ_7745c5c3_Var5 = []any{swatchDotClass(item, props.Classes.Dot)}
+							var templ_7745c5c3_Var5 = []any{utils.Cn("block h-5 w-5 rounded-full border border-border bg-muted", item.Class)}
 							templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
@@ -135,7 +125,7 @@ func SwatchGroup(props SwatchGroupProps) templ.Component {
 						templ_7745c5c3_Err = ui.ButtonBlock(ui.ButtonProps{
 							Type:      "button",
 							Variant:   "unstyled",
-							Class:     swatchButtonClass(item, props),
+							Class:     utils.Cn("inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background", selectedBorderClass(item, props.SelectedValue)),
 							AriaLabel: item.Label,
 							Attrs:     swatchAttrs(item, props.SelectedValue),
 						}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
@@ -145,13 +135,13 @@ func SwatchGroup(props SwatchGroupProps) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = ui.Group(ui.GroupProps{Class: swatchGroupListClass(props.Classes.List)}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Group(ui.GroupProps{Class: "gap-2 flex-wrap"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = ui.Stack(ui.StackProps{Class: swatchGroupRootClass(props.Classes.Root)}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.Stack(ui.StackProps{Class: "gap-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -174,32 +164,11 @@ func swatchSelected(item Swatch, selectedValue string) bool {
 	return strings.TrimSpace(selectedValue) != "" && item.Value == selectedValue
 }
 
-func swatchGroupRootClass(value string) string {
-	return utils.Cn("gap-2", value)
-}
-
-func swatchGroupLabelClass(value string) string {
-	return utils.Cn("text-sm text-muted-foreground", value)
-}
-
-func swatchGroupListClass(value string) string {
-	return utils.Cn("gap-2 flex-wrap", value)
-}
-
-func swatchButtonClass(item Swatch, props SwatchGroupProps) string {
-	selected := ""
-	if swatchSelected(item, props.SelectedValue) {
-		selected = utils.Cn("border-primary", props.Classes.Selected)
+func selectedBorderClass(item Swatch, selectedValue string) string {
+	if swatchSelected(item, selectedValue) {
+		return "border-primary"
 	}
-	return utils.Cn(
-		"inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background",
-		selected,
-		props.Classes.Swatch,
-	)
-}
-
-func swatchDotClass(item Swatch, class string) string {
-	return utils.Cn("block h-5 w-5 rounded-full border border-border bg-muted", item.Class, class)
+	return ""
 }
 
 var _ = templruntime.GeneratedTemplate

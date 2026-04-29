@@ -17,7 +17,6 @@ import (
 
 type LanguageToggleProps struct {
 	ID               string
-	Class            string
 	Href             string
 	DefaultLocale    string
 	CurrentLocale    string
@@ -31,17 +30,14 @@ type LanguageToggleProps struct {
 
 type DarkModeToggleProps struct {
 	ID                 string
-	Class              string
 	IconID             string
-	IconClass          string
 	Label              string
 	SwitchToDarkLabel  string
 	SwitchToLightLabel string
 }
 
 type HeaderLanguageToggleProps struct {
-	ContainerClass string
-	Toggle         LanguageToggleProps
+	Toggle LanguageToggleProps
 }
 
 func LanguageToggle(props LanguageToggleProps) templ.Component {
@@ -66,7 +62,7 @@ func LanguageToggle(props LanguageToggleProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if strings.TrimSpace(props.CurrentLocale) != "" || strings.TrimSpace(props.CurrentLabel) != "" {
-			templ_7745c5c3_Err = ui.Button(ui.ButtonProps{ID: languageToggleID(props.ID), Href: props.Href, Variant: "unstyled", Class: languageToggleClass(props.Class), Attrs: languageToggleAttrs(props)}, languageToggleLabel(props.CurrentLabel, props.CurrentLocale)).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.Button(ui.ButtonProps{ID: languageToggleID(props.ID), Href: props.Href, Variant: "unstyled", Class: "ui-header-action-btn", Attrs: languageToggleAttrs(props)}, languageToggleLabel(props.CurrentLabel, props.CurrentLocale)).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -108,44 +104,26 @@ func DarkModeToggle(props DarkModeToggleProps) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			var templ_7745c5c3_Var4 = []any{darkModeIconClass(props.IconClass)}
-			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<span id=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(darkModeIconID(props.IconID))
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(darkModeIconID(props.IconID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `toggles/toggles.templ`, Line: 47, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `toggles/toggles.templ`, Line: 43, Col: 41}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var4).String())
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `toggles/toggles.templ`, Line: 1, Col: 0}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"></span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"ui-theme-icon latty latty-moon\"></span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.ButtonBlock(ui.ButtonProps{ID: darkModeToggleID(props.ID), Variant: "unstyled", Class: darkModeToggleClass(props.Class), AriaLabel: darkModeToggleLabel(props.Label), Attrs: darkModeToggleAttrs(props)}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.ButtonBlock(ui.ButtonProps{ID: darkModeToggleID(props.ID), Variant: "unstyled", Class: "ui-header-theme-btn", AriaLabel: darkModeToggleLabel(props.Label), Attrs: darkModeToggleAttrs(props)}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -169,30 +147,12 @@ func HeaderLanguageToggle(props HeaderLanguageToggleProps) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var7 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var7 == nil {
-			templ_7745c5c3_Var7 = templ.NopComponent
+		templ_7745c5c3_Var5 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var5 == nil {
+			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var8 = []any{headerLanguageToggleClass(props.ContainerClass)}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var8...)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var8).String())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `toggles/toggles.templ`, Line: 1, Col: 0}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"ui-header-language\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -200,7 +160,7 @@ func HeaderLanguageToggle(props HeaderLanguageToggleProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -213,17 +173,6 @@ func languageToggleID(value string) string {
 		return value
 	}
 	return "language-toggle"
-}
-
-func languageToggleClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultLanguageToggleClass()
-}
-
-func defaultLanguageToggleClass() string {
-	return "ui-header-action-btn"
 }
 
 func languageToggleAttrs(props LanguageToggleProps) t.Attributes {
@@ -241,17 +190,6 @@ func languageToggleAttrs(props LanguageToggleProps) t.Attributes {
 	return attrs
 }
 
-func headerLanguageToggleClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultHeaderLanguageToggleClass()
-}
-
-func defaultHeaderLanguageToggleClass() string {
-	return "ui-header-language"
-}
-
 func languageToggleLabel(label, locale string) string {
 	if strings.TrimSpace(label) != "" {
 		return label
@@ -264,17 +202,6 @@ func darkModeToggleID(value string) string {
 		return value
 	}
 	return "ui8kit-theme-toggle"
-}
-
-func darkModeToggleClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultDarkModeToggleClass()
-}
-
-func defaultDarkModeToggleClass() string {
-	return "ui-header-theme-btn"
 }
 
 func darkModeToggleAttrs(props DarkModeToggleProps) t.Attributes {
@@ -291,17 +218,6 @@ func darkModeIconID(value string) string {
 		return value
 	}
 	return "theme-toggle-icon"
-}
-
-func darkModeIconClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultDarkModeIconClass()
-}
-
-func defaultDarkModeIconClass() string {
-	return "ui-theme-icon latty latty-moon"
 }
 
 func darkModeToggleLabel(value string) string {

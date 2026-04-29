@@ -9,7 +9,6 @@ import (
 
 type LanguageToggleProps struct {
 	ID               string
-	Class            string
 	Href             string
 	DefaultLocale    string
 	CurrentLocale    string
@@ -23,33 +22,30 @@ type LanguageToggleProps struct {
 
 type DarkModeToggleProps struct {
 	ID                 string
-	Class              string
 	IconID             string
-	IconClass          string
 	Label              string
 	SwitchToDarkLabel  string
 	SwitchToLightLabel string
 }
 
 type HeaderLanguageToggleProps struct {
-	ContainerClass string
-	Toggle         LanguageToggleProps
+	Toggle LanguageToggleProps
 }
 
 templ LanguageToggle(props LanguageToggleProps) {
 	if strings.TrimSpace(props.CurrentLocale) != "" || strings.TrimSpace(props.CurrentLabel) != "" {
-		@ui.Button(ui.ButtonProps{ID: languageToggleID(props.ID), Href: props.Href, Variant: "unstyled", Class: languageToggleClass(props.Class), Attrs: languageToggleAttrs(props)}, languageToggleLabel(props.CurrentLabel, props.CurrentLocale))
+		@ui.Button(ui.ButtonProps{ID: languageToggleID(props.ID), Href: props.Href, Variant: "unstyled", Class: "ui-header-action-btn", Attrs: languageToggleAttrs(props)}, languageToggleLabel(props.CurrentLabel, props.CurrentLocale))
 	}
 }
 
 templ DarkModeToggle(props DarkModeToggleProps) {
-	@ui.ButtonBlock(ui.ButtonProps{ID: darkModeToggleID(props.ID), Variant: "unstyled", Class: darkModeToggleClass(props.Class), AriaLabel: darkModeToggleLabel(props.Label), Attrs: darkModeToggleAttrs(props)}) {
-		<span id={ darkModeIconID(props.IconID) } class={ darkModeIconClass(props.IconClass) }></span>
+	@ui.ButtonBlock(ui.ButtonProps{ID: darkModeToggleID(props.ID), Variant: "unstyled", Class: "ui-header-theme-btn", AriaLabel: darkModeToggleLabel(props.Label), Attrs: darkModeToggleAttrs(props)}) {
+		<span id={ darkModeIconID(props.IconID) } class="ui-theme-icon latty latty-moon"></span>
 	}
 }
 
 templ HeaderLanguageToggle(props HeaderLanguageToggleProps) {
-	<div class={ headerLanguageToggleClass(props.ContainerClass) }>
+	<div class="ui-header-language">
 		@LanguageToggle(props.Toggle)
 	</div>
 }
@@ -59,17 +55,6 @@ func languageToggleID(value string) string {
 		return value
 	}
 	return "language-toggle"
-}
-
-func languageToggleClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultLanguageToggleClass()
-}
-
-func defaultLanguageToggleClass() string {
-	return "ui-header-action-btn"
 }
 
 func languageToggleAttrs(props LanguageToggleProps) t.Attributes {
@@ -87,17 +72,6 @@ func languageToggleAttrs(props LanguageToggleProps) t.Attributes {
 	return attrs
 }
 
-func headerLanguageToggleClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultHeaderLanguageToggleClass()
-}
-
-func defaultHeaderLanguageToggleClass() string {
-	return "ui-header-language"
-}
-
 func languageToggleLabel(label, locale string) string {
 	if strings.TrimSpace(label) != "" {
 		return label
@@ -110,17 +84,6 @@ func darkModeToggleID(value string) string {
 		return value
 	}
 	return "ui8kit-theme-toggle"
-}
-
-func darkModeToggleClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultDarkModeToggleClass()
-}
-
-func defaultDarkModeToggleClass() string {
-	return "ui-header-theme-btn"
 }
 
 func darkModeToggleAttrs(props DarkModeToggleProps) t.Attributes {
@@ -137,17 +100,6 @@ func darkModeIconID(value string) string {
 		return value
 	}
 	return "theme-toggle-icon"
-}
-
-func darkModeIconClass(value string) string {
-	if strings.TrimSpace(value) != "" {
-		return value
-	}
-	return defaultDarkModeIconClass()
-}
-
-func defaultDarkModeIconClass() string {
-	return "ui-theme-icon latty latty-moon"
 }
 
 func darkModeToggleLabel(value string) string {

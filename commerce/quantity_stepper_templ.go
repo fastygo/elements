@@ -12,22 +12,13 @@ import (
 	"strings"
 
 	"github.com/fastygo/ui8kit/ui"
-	"github.com/fastygo/ui8kit/utils"
 )
-
-type QuantityStepperClasses struct {
-	Root   string
-	Label  string
-	Button string
-	Value  string
-}
 
 type QuantityStepperProps struct {
 	Label      string
 	Value      string
 	MinusLabel string
 	PlusLabel  string
-	Classes    QuantityStepperClasses
 }
 
 func QuantityStepper(props QuantityStepperProps) templ.Component {
@@ -64,7 +55,7 @@ func QuantityStepper(props QuantityStepperProps) templ.Component {
 			}
 			ctx = templ.InitializeContext(ctx)
 			if strings.TrimSpace(props.Label) != "" {
-				templ_7745c5c3_Err = ui.Text(ui.TextProps{Class: quantityLabelClass(props.Classes.Label), FontSize: "sm", TextColor: "muted-foreground"}, props.Label).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Text(ui.TextProps{Class: "text-sm text-muted-foreground", FontSize: "sm", TextColor: "muted-foreground"}, props.Label).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -85,7 +76,7 @@ func QuantityStepper(props QuantityStepperProps) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = ui.Button(ui.ButtonProps{Type: "button", Variant: "outline", Size: "icon", AriaLabel: quantityMinusLabel(props), Class: quantityButtonClass(props.Classes.Button)}, "-").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Button(ui.ButtonProps{Type: "button", Variant: "outline", Size: "icon", AriaLabel: quantityMinusLabel(props), Class: "h-8 w-8"}, "-").Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -93,7 +84,7 @@ func QuantityStepper(props QuantityStepperProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = ui.Text(ui.TextProps{Class: quantityValueClass(props.Classes.Value), FontSize: "sm", FontWeight: "semibold", TextAlign: "center"}, quantityValue(props.Value)).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Text(ui.TextProps{Class: "min-w-8", FontSize: "sm", FontWeight: "semibold", TextAlign: "center"}, quantityValue(props.Value)).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -101,7 +92,7 @@ func QuantityStepper(props QuantityStepperProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = ui.Button(ui.ButtonProps{Type: "button", Variant: "outline", Size: "icon", AriaLabel: quantityPlusLabel(props), Class: quantityButtonClass(props.Classes.Button)}, "+").Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Button(ui.ButtonProps{Type: "button", Variant: "outline", Size: "icon", AriaLabel: quantityPlusLabel(props), Class: "h-8 w-8"}, "+").Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -113,28 +104,12 @@ func QuantityStepper(props QuantityStepperProps) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.Stack(ui.StackProps{Class: quantityRootClass(props.Classes.Root)}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Stack(ui.StackProps{Class: "gap-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		return nil
 	})
-}
-
-func quantityRootClass(value string) string {
-	return utils.Cn("gap-2", value)
-}
-
-func quantityLabelClass(value string) string {
-	return utils.Cn("text-sm text-muted-foreground", value)
-}
-
-func quantityButtonClass(value string) string {
-	return utils.Cn("h-8 w-8", value)
-}
-
-func quantityValueClass(value string) string {
-	return utils.Cn("min-w-8", value)
 }
 
 func quantityValue(value string) string {

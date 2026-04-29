@@ -4,33 +4,24 @@ import (
 	"strings"
 
 	"github.com/fastygo/ui8kit/ui"
-	"github.com/fastygo/ui8kit/utils"
 )
-
-type PriceRangeClasses struct {
-	Root  string
-	Track string
-	Fill  string
-	Thumb string
-}
 
 type PriceRangeProps struct {
 	Label    string
 	MinLabel string
 	MaxLabel string
 	Value    string
-	Classes  PriceRangeClasses
 }
 
 templ PriceRange(props PriceRangeProps) {
-	@ui.Stack(ui.StackProps{Class: priceRangeRootClass(props.Classes.Root)}) {
+	@ui.Stack(ui.StackProps{Class: "gap-2"}) {
 		if strings.TrimSpace(props.Label) != "" {
 			@ui.Text(ui.TextProps{FontSize: "sm", TextColor: "muted-foreground"}, props.Label)
 		}
-		<div class={ priceTrackClass(props.Classes.Track) } aria-hidden="true">
-			<span class={ priceFillClass(props.Classes.Fill) }></span>
-			<span class={ priceThumbClass(props.Classes.Thumb, "left-0") }></span>
-			<span class={ priceThumbClass(props.Classes.Thumb, "right-0") }></span>
+		<div class="relative h-2 rounded-full bg-muted" aria-hidden="true">
+			<span class="absolute left-0 right-0 top-0 h-2 rounded-full bg-primary"></span>
+			<span class="absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-border bg-background shadow"></span>
+			<span class="absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-border bg-background shadow"></span>
 		</div>
 		@ui.Group(ui.GroupProps{Class: "justify-between"}) {
 			@ui.Text(ui.TextProps{FontSize: "xs", TextColor: "muted-foreground"}, props.MinLabel)
@@ -40,20 +31,4 @@ templ PriceRange(props PriceRangeProps) {
 			@ui.Text(ui.TextProps{FontSize: "xs", TextColor: "muted-foreground"}, props.MaxLabel)
 		}
 	}
-}
-
-func priceRangeRootClass(value string) string {
-	return utils.Cn("gap-2", value)
-}
-
-func priceTrackClass(value string) string {
-	return utils.Cn("relative h-2 rounded-full bg-muted", value)
-}
-
-func priceFillClass(value string) string {
-	return utils.Cn("absolute left-0 right-0 top-0 h-2 rounded-full bg-primary", value)
-}
-
-func priceThumbClass(value string, side string) string {
-	return utils.Cn("absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-border bg-background shadow", side, value)
 }

@@ -1,9 +1,5 @@
 {
   "patterns": {
-    "el-widget": ["relative"],
-    "el-widget-control": ["inline-flex", "items-center", "justify-center"],
-    "el-widget-label": ["text-sm", "font-medium"],
-    "el-widget-description": ["text-sm", "text-muted-foreground"],
     "ui-header-action-btn": ["inline-flex", "items-center", "justify-center"],
     "ui-header-language": ["flex", "justify-center"],
     "ui-header-menu-btn": ["inline-flex", "items-center", "justify-center"],

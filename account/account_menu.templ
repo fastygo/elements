@@ -4,34 +4,23 @@ import (
 	"strings"
 
 	t "github.com/a-h/templ"
-	"github.com/fastygo/elements/toggles"
 	"github.com/fastygo/ui8kit/ui"
 )
 
-type MenuClasses struct {
-	Wrap    string
-	Form    string
-	Email   string
-	SignOut string
-}
-
 type MenuProps struct {
-	Email          string
-	SignOutLabel   string
-	SignOutAction  string
-	LanguageToggle toggles.LanguageToggleProps
-	Classes        MenuClasses
+	Email         string
+	SignOutLabel  string
+	SignOutAction string
 }
 
 templ Menu(props MenuProps) {
-	@ui.Group(ui.GroupProps{Class: props.Classes.Wrap}) {
-		<form method="post" action={ t.URL(menuSignOutAction(props.SignOutAction)) } class={ props.Classes.Form }>
+	@ui.Group(ui.GroupProps{Class: "gap-2"}) {
+		<form method="post" action={ t.URL(menuSignOutAction(props.SignOutAction)) } class="flex items-center gap-2">
 			if strings.TrimSpace(props.Email) != "" {
-				@ui.Text(ui.TextProps{Tag: "span", Class: props.Classes.Email}, props.Email)
+				@ui.Text(ui.TextProps{Tag: "span", Class: "text-sm text-muted-foreground"}, props.Email)
 			}
-			@ui.Button(ui.ButtonProps{Type: "submit", Variant: "outline", Size: "sm", Class: props.Classes.SignOut}, menuSignOutLabel(props.SignOutLabel))
+			@ui.Button(ui.ButtonProps{Type: "submit", Variant: "outline", Size: "sm"}, menuSignOutLabel(props.SignOutLabel))
 		</form>
-		@toggles.LanguageToggle(props.LanguageToggle)
 	}
 }
 
